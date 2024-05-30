@@ -11,8 +11,5 @@ def setup_test():
 def test_create():
     setup_test()
 
-    with SessionFactory.get_session() as session:
-        s = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
-
-        session.add(s)
-        session.commit()
+    s = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s.create()
