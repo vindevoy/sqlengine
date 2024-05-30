@@ -19,3 +19,15 @@ class Base(DeclarativeBase):
             record = session.get(cls, rec_id)
 
             return record
+
+    def update(self):
+        with SessionFactory.get_session() as session:
+            current = session.get(self.__class__, self.id)
+
+            column_names = self.__class__.__table__.columns.keys()
+
+            for column in column_names:
+                if column != "id":
+                    setattr(current, column, getattr(self, column))
+
+            session.commit()

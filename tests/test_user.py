@@ -19,3 +19,21 @@ def test_create():
     assert v.first_name == "Yves"
     assert v.last_name == "Vindevogel"
     assert v.login == "vindevoy"
+
+
+def test_update():
+    setup_test()
+
+    s = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s.create()
+
+    v = Student.read(rec_id=1)
+    v.login = "sidviny"
+    v.update()
+
+    u = Student.read(rec_id=1)
+
+    assert u.id == 1
+    assert u.first_name == "Yves"
+    assert u.last_name == "Vindevogel"
+    assert u.login == "sidviny"
