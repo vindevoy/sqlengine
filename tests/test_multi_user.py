@@ -40,3 +40,32 @@ def test_create_no_context():
 
     v = Student.read(rec_id=1)
     assert v.login == "vindevoy"
+
+
+def test_delete():
+    setup_test()
+
+    assert Student.record_count() == 0
+
+    s1 = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s2 = Student(first_name="Niels", last_name="Vindevogel", login="vindevon")
+    s3 = Student(first_name="Next", last_name="Vindevogel", login="vindevox")
+
+    with TransactionFactory.get_transaction() as t:
+        t.create(s1, s2, s3)
+
+    assert Student.record_count() == 3
+
+    v1 = Student.read(rec_id=1)
+    v2 = Student.read(rec_id=2)
+    v3 = Student.read(rec_id=3)
+
+    with TransactionFactory.get_transaction() as t:
+        t.delete(v1)
+
+    assert Student.record_count() == 2
+
+    with TransactionFactory.get_transaction() as t:
+        t.delete(v2, v3)
+
+    assert Student.record_count() == 0

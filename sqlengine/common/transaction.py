@@ -10,6 +10,13 @@ class Transaction:
             session.add_all(instances)
             session.commit()
 
+    def delete(self, *instances):
+        with self.__session as session:
+            for instance in instances:
+                session.delete(instance)
+
+            session.commit()
+
     def __enter__(self):
         return self
 

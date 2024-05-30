@@ -4,15 +4,15 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.common.session_factory import SessionFactory
+from sqlengine.common.transaction_factory import TransactionFactory
 
 
 class Base(DeclarativeBase):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     def create(self):
-        with SessionFactory.get_session() as session:
-            session.add(self)
-            session.commit()
+        with TransactionFactory.get_transaction() as transaction:
+            transaction.create(self)
 
     @classmethod
     def read(cls, rec_id: int):
@@ -34,9 +34,8 @@ class Base(DeclarativeBase):
             session.commit()
 
     def delete(self):
-        with SessionFactory.get_session() as session:
-            session.delete(self)
-            session.commit()
+        with TransactionFactory.get_transaction() as transaction:
+            transaction.delete(self)
 
     @classmethod
     def record_count(cls):
