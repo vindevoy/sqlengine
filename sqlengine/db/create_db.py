@@ -1,11 +1,9 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-
+from sqlengine.common.engine_factory import EngineFactory
 from sqlengine.models.student import Student
 
 
 def execute():
-    engine = create_engine(f"postgresql://school:school@localhost/school", echo=True)
+    engine = EngineFactory.get_engine()
 
     Student.metadata.create_all(engine)
 

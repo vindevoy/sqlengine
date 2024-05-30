@@ -1,8 +1,10 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import MetaData
+
+from sqlengine.common.engine_factory import EngineFactory
 
 
 def execute():
-    engine = create_engine(f"postgresql://school:school@localhost/school", echo=True)
+    engine = EngineFactory.get_engine()
     meta = MetaData()
 
     meta.reflect(bind=engine)

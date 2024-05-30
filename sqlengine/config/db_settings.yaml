@@ -1,0 +1,4 @@
+database: school
+user: school
+password: school
+echo: True
