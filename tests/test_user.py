@@ -37,3 +37,17 @@ def test_update():
     assert u.first_name == "Yves"
     assert u.last_name == "Vindevogel"
     assert u.login == "sidviny"
+
+
+def test_delete():
+    setup_test()
+
+    s = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s.create()
+
+    assert Student.record_count() == 1
+
+    v = Student.read(rec_id=1)
+    v.delete()
+
+    assert Student.record_count() == 0

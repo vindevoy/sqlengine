@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -31,3 +32,15 @@ class Base(DeclarativeBase):
                     setattr(current, column, getattr(self, column))
 
             session.commit()
+
+    def delete(self):
+        with SessionFactory.get_session() as session:
+            session.delete(self)
+            session.commit()
+
+    @classmethod
+    def record_count(cls):
+        with SessionFactory.get_session() as session:
+            rec_count = session.query(func.count(cls.id)).scalar()
+
+            return rec_count
