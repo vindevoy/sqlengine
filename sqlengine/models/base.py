@@ -12,3 +12,10 @@ class Base(DeclarativeBase):
         with SessionFactory.get_session() as session:
             session.add(self)
             session.commit()
+
+    @classmethod
+    def read(cls, rec_id: int):
+        with SessionFactory.get_session() as session:
+            record = session.get(cls, rec_id)
+
+            return record

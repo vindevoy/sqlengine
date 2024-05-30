@@ -1,4 +1,3 @@
-from sqlengine.common.session_factory import SessionFactory
 from sqlengine.db import drop_db, create_db
 from sqlengine.models.student import Student
 
@@ -13,3 +12,10 @@ def test_create():
 
     s = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
     s.create()
+
+    v = Student.read(rec_id=1)
+
+    assert v.id == 1
+    assert v.first_name == "Yves"
+    assert v.last_name == "Vindevogel"
+    assert v.login == "vindevoy"
