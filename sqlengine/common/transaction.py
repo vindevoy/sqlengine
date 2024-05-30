@@ -5,7 +5,7 @@ class Transaction:
     def __init__(self):
         self.__session = SessionFactory.get_session()
 
-    def create(self, *args):
+    def create(self, *instances):
         with self.__session as session:
-            session.add_all(args)
+            session.add_all(instances)
             session.commit()
