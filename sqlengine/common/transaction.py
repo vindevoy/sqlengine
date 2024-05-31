@@ -10,6 +10,16 @@ class Transaction:
             session.add_all(instances)
             session.commit()
 
+    def read(self, cls,  rec_ids: list[int]):
+        records = []
+
+        with self.__session as session:
+            for rec_id in rec_ids:
+                record = session.get(cls, rec_id)
+                records.append(record)
+
+            return records
+
     def delete(self, *instances):
         with self.__session as session:
             for instance in instances:

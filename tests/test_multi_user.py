@@ -69,3 +69,25 @@ def test_delete():
         t.delete(v2, v3)
 
     assert Student.record_count() == 0
+
+
+def test_read():
+    setup_test()
+
+    assert Student.record_count() == 0
+
+    s1 = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s2 = Student(first_name="Niels", last_name="Vindevogel", login="vindevon")
+    s3 = Student(first_name="Next", last_name="Vindevogel", login="vindevox")
+
+    with TransactionFactory.get_transaction() as t:
+        t.create(s1, s2, s3)
+
+    with TransactionFactory.get_transaction() as t:
+        lst = t.read(Student, [1, 3])
+
+        v1 = lst[0]
+        v3 = lst[1]
+
+        assert v1.login == "vindevoy"
+        assert v3.login == "vindevox"

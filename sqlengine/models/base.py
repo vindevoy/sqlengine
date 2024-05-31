@@ -16,10 +16,8 @@ class Base(DeclarativeBase):
 
     @classmethod
     def read(cls, rec_id: int):
-        with SessionFactory.get_session() as session:
-            record = session.get(cls, rec_id)
-
-            return record
+        with TransactionFactory.get_transaction() as transaction:
+            return transaction.read(cls, [rec_id])[0]
 
     def update(self):
         with SessionFactory.get_session() as session:
