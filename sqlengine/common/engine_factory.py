@@ -14,6 +14,7 @@ class EngineFactory:
     :date: 2024-05-31
     :author: Yves Vindevogel <yves@vindevogel.net>
     """
+
     __settings = None
 
     __user_name: str = ""
@@ -34,6 +35,7 @@ class EngineFactory:
         :date: 2024-05-31
         :author: Yves Vindevogel <yves@vindevogel.net>
         """
+
         if cls.__settings is None:
             current_path = Path(__file__).parent
 
