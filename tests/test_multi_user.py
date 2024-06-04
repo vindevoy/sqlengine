@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from sqlengine.common.transaction_factory import TransactionFactory
 from sqlengine.db import drop_db, create_db
 from sqlengine.models.student import Student
@@ -91,3 +93,28 @@ def test_read():
 
         assert v1.login == "vindevoy"
         assert v3.login == "vindevox"
+
+
+def test_all():
+    setup_test()
+
+    assert Student.record_count() == 0
+
+    s1 = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s2 = Student(first_name="Niels", last_name="Vindevogel", login="vindevon")
+    s3 = Student(first_name="Next", last_name="Vindevogel", login="vindevox")
+
+    with TransactionFactory.get_transaction() as t:
+        t.create(s1, s2, s3)
+
+    result = Student.all()
+
+    assert len(result) == 3
+    assert type(result) is list
+    assert type(result[0]) is Student
+
+    assert result[0].login == "vindevoy"
+    assert result[1].login == "vindevon"
+    assert result[2].login == "vindevox"
+
+    pprint(result)

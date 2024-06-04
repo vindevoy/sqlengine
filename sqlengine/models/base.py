@@ -1,6 +1,7 @@
+from collections import namedtuple
 from typing import Any
 
-from sqlalchemy import func
+from sqlalchemy import func, select
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -87,7 +88,34 @@ class Base(DeclarativeBase):
         :author: Yves Vindevogel <yves@vindevogel.net>
         """
 
+        ###
+        # Method is here and not in transaction as I don't see a reason to get multiple record counts at once.
+        ###
+
         with SessionFactory.get_session() as session:
             rec_count = session.query(func.count(cls.id)).scalar()
 
             return rec_count
+
+    @classmethod
+    def all(cls):
+        """
+        Returns all records for a table in the database.
+
+        :version: 1.0.0
+        :date: 2024-06-04
+        :author: Yves Vindevogel <yves@vindevogel.net>
+        """
+
+        ###
+        # Method is here and not in transaction as I don't see a reason to get multiple tables at once.
+        ###
+
+        stmt = select(cls)
+
+        with SessionFactory.get_session() as session:
+            ###
+            # row contains a tuple where the first element is the model class, the second part of the tuple is nothing.
+            # the list comprehension makes sure that all records are read and that the session can be closed.
+            return [row[0] for row in session.execute(stmt)]
+            ###
