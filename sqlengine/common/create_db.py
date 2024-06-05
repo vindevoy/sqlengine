@@ -4,12 +4,12 @@ import pandas as pd
 
 from sqlengine.common.drop_db import execute as drop_db_execute
 from sqlengine.common.engine_factory import EngineFactory
-from sqlengine.models.course import Course
-from sqlengine.models.grade import Grade
-from sqlengine.models.registration import Registration
-from sqlengine.models.school_year import SchoolYear
-from sqlengine.models.student import Student
-from sqlengine.models.subject import Subject
+from sqlengine.samples.course import Course
+from sqlengine.samples.grade import Grade
+from sqlengine.samples.registration import Registration
+from sqlengine.samples.school_year import SchoolYear
+from sqlengine.samples.student import Student
+from sqlengine.samples.subject import Subject
 
 
 def execute() -> None:

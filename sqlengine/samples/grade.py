@@ -7,8 +7,8 @@ from sqlalchemy.orm import mapped_column
 from sqlengine.common.base import Base
 
 if TYPE_CHECKING:
-    from sqlengine.models.registration import Registration
-    from sqlengine.models.subject import Subject
+    from sqlengine.samples.registration import Registration
+    from sqlengine.samples.subject import Subject
 
 
 class Grade(Base):

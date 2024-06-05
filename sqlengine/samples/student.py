@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.common.base import Base
-from sqlengine.models.registration import Registration
+from sqlengine.samples.registration import Registration
 
 
 class Student(Base):

@@ -8,7 +8,7 @@ from sqlalchemy.orm import mapped_column
 from sqlengine.common.base import Base
 
 if TYPE_CHECKING:
-    from sqlengine.models.registration import Registration
+    from sqlengine.samples.registration import Registration
 
 
 class SchoolYear(Base):

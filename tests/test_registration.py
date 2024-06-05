@@ -1,8 +1,8 @@
 from sqlengine.common import drop_db, create_db
 from sqlengine.common.output_factory import OutputFactory
 from sqlengine.common.transaction_factory import TransactionFactory
-from sqlengine.models.registration import Registration
-from sqlengine.models.student import Student
+from sqlengine.samples.registration import Registration
+from sqlengine.samples.student import Student
 
 
 def setup_test():
