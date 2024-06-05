@@ -1,5 +1,7 @@
 from typing import Any
 
+from sqlalchemy import inspect
+
 from sqlengine.common.session_factory import SessionFactory
 
 
@@ -65,9 +67,37 @@ class Transaction:
         with self.__session as session:
             for rec_id in rec_ids:
                 record = session.get(cls, rec_id)
+
+                ###
+                # The code below solves a DetachedInstanceError.
+                # When you read the model, it does not read the linked properties by default.
+                # You must do an "eager" read, as they call it.  You read each property to fill the data
+                inspection = inspect(cls)
+                relationship_attributes = [attr for attr in inspection.mapper.relationships.keys()]
+
+                for attr in relationship_attributes:
+                    _ = getattr(record, attr)
+                ###
+
                 records.append(record)
 
             return records
+
+        ###
+        # Version history
+        #
+        # version: 1.0.1
+        # date: 2024-06-05
+        # author: Yves Vindevogel <yves@vindevogel.net>
+        #
+        # Fixed a DetachedInstanceError when you access a linked property
+        #
+        # version: 1.0.0
+        # date: 2024-05-31
+        # author: Yves Vindevogel <yves@vindevogel.net>
+        #
+        # Original code
+        ###
 
     def update(self, *instances) -> None:
         """
