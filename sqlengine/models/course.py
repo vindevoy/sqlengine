@@ -4,7 +4,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
-from sqlengine.models.base import Base
+from sqlengine.common.base import Base
 
 if TYPE_CHECKING:
     from sqlengine.models.registration import Registration

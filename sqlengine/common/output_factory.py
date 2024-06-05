@@ -1,7 +1,7 @@
 import pandas
 from tabulate import tabulate
 
-from sqlengine.models.base import Base
+from sqlengine.common.base import Base
 
 
 class OutputFactory:

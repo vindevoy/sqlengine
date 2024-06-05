@@ -1,5 +1,5 @@
+from sqlengine.common import drop_db, create_db
 from sqlengine.common.transaction_factory import TransactionFactory
-from sqlengine.db import drop_db, create_db
 from sqlengine.models.course import Course
 from sqlengine.models.subject import Subject
 

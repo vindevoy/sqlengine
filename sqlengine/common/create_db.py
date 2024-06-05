@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from sqlengine.common.drop_db import execute as drop_db_execute
 from sqlengine.common.engine_factory import EngineFactory
-from sqlengine.db.drop_db import execute as drop_db_execute
 from sqlengine.models.course import Course
 from sqlengine.models.grade import Grade
 from sqlengine.models.registration import Registration
@@ -59,7 +59,7 @@ def __populate_table(entity: str, entity_cls):
     """
 
     current_path = Path(__file__).parent
-    csv_file = current_path.joinpath(f"{entity}.csv")
+    csv_file = current_path.parent.joinpath("db", f"{entity}.csv")
 
     df = pd.read_csv(current_path.joinpath(csv_file), sep=";")
 
