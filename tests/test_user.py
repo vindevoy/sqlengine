@@ -1,3 +1,5 @@
+from sqlalchemy.orm.exc import DetachedInstanceError
+
 from sqlengine.common import drop_db, create_db
 from sqlengine.common.output_factory import OutputFactory
 from sqlengine.common.transaction_factory import TransactionFactory
@@ -93,3 +95,14 @@ def test_deep_read():
 
     assert reg.student_id == 1
     assert reg.student.login == "vindevoy"
+
+    s2 = Student.read(rec_id=1, deep=False)
+
+    reg = s2.registrations[0]
+
+    assert reg.student_id == 1  # This works
+
+    try:
+        assert reg.student.login == "vindevoy"  # This does not work without deep read
+    except DetachedInstanceError:
+        pass
