@@ -89,8 +89,13 @@ def test_read():
 
     assert c.mnemonic == "python_1"
     assert c.name == "Python Developer, first year"
+
     assert len(c.subjects) == 2
+
     assert c.subjects[0].mnemonic == "py_start"
     assert c.subjects[0].name == "Starting with Programming"
+    assert c.subjects[0].course_id == c1.id
+
     assert c.subjects[1].mnemonic == "py_func_prog"
     assert c.subjects[1].name == "Functional Programming in Python"
+    assert c.subjects[1].course_id == c1.id
