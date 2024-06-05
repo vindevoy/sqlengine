@@ -55,6 +55,25 @@ def test_no_tx():
     s2 = Subject(mnemonic="py_func_prog", name="Functional Programming in Python", course=c1)
     s2.create()
 
+    assert Course.record_count() == 1
+    assert Subject.record_count() == 2
+
+
+def test_append():
+    setup_test()
+
+    c1 = Course(mnemonic="python_1", name="Python Developer, first year")
+    s1 = Subject(mnemonic="py_start", name="Starting with Programming", course_id=c1.id)
+    s2 = Subject(mnemonic="py_func_prog", name="Functional Programming in Python", course=c1)
+
+    c1.subjects.append(s1)
+    c1.subjects.append(s2)
+
+    c1.create()
+
+    assert Course.record_count() == 1
+    assert Subject.record_count() == 2
+
 
 def test_read():
     setup_test()
@@ -68,7 +87,6 @@ def test_read():
 
     c = Course.read(1)
 
-    # TODO: this fails
     assert c.mnemonic == "python_1"
     assert c.name == "Python Developer, first year"
     assert len(c.subjects) == 2
