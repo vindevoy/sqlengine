@@ -7,6 +7,7 @@ from sqlalchemy.orm import mapped_column
 from sqlengine.models.base import Base
 
 if TYPE_CHECKING:
+    from sqlengine.models.registration import Registration
     from sqlengine.models.subject import Subject
 
 
@@ -26,6 +27,11 @@ class Course(Base):
 
     subjects: Mapped[List["Subject"]] = relationship(
         "Subject",
+        back_populates="course",
+        cascade="all, delete-orphan")
+
+    registrations: Mapped[List["Registration"]] = relationship(
+        "Registration",
         back_populates="course",
         cascade="all, delete-orphan")
 

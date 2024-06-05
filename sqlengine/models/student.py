@@ -1,8 +1,13 @@
+from typing import List, TYPE_CHECKING
+
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.models.base import Base
+
+if TYPE_CHECKING:
+    from sqlengine.models.registration import Registration
 
 
 class Student(Base):
@@ -19,6 +24,11 @@ class Student(Base):
     login: Mapped[str] = mapped_column(String(30))
     first_name: Mapped[str] = mapped_column(String(50))
     last_name: Mapped[str] = mapped_column(String(50))
+
+    registrations: Mapped[List["Registration"]] = relationship(
+        "Registration",
+        back_populates="student",
+        cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         """

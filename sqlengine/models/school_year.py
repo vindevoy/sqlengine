@@ -1,10 +1,14 @@
 from datetime import date
+from typing import List, TYPE_CHECKING
 
 from sqlalchemy import String, Date
-from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.models.base import Base
+
+if TYPE_CHECKING:
+    from sqlengine.models.registration import Registration
 
 
 class SchoolYear(Base):
@@ -18,9 +22,14 @@ class SchoolYear(Base):
 
     __tablename__ = "tbl_school_years"
 
-    name: Mapped[str] = mapped_column(String(10))
+    description: Mapped[str] = mapped_column(String(10))
     start_date: Mapped[date] = mapped_column(Date)
     end_date: Mapped[date] = mapped_column(Date)
+
+    registrations: Mapped[List["Registration"]] = relationship(
+        "Registration",
+        back_populates="school_year",
+        cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         """
@@ -31,4 +40,4 @@ class SchoolYear(Base):
         :author: Yves Vindevogel <yves@vindevogel.net>
         """
 
-        return f"SchoolYear(id={self.id}, name={self.name})"
+        return f"SchoolYear(id={self.id}, description={self.description})"
