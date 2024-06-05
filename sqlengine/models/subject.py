@@ -1,33 +1,31 @@
-from typing import List, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
-from sqlalchemy import String
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.models.base import Base
 
 if TYPE_CHECKING:
-    from sqlengine.models.subject import Subject
+    from sqlengine.models.course import Course
 
 
-class Course(Base):
+class Subject(Base):
     """
-    Course demo class
+    Subject demo class
 
     :version: 1.0.0
     :date: 2024-06-05
     :author: Yves Vindevogel <yves@vindevogel.net>
     """
 
-    __tablename__ = "tbl_courses"
+    __tablename__ = "tbl_subjects"
 
-    mnemonic: Mapped[str] = mapped_column(String(10))
+    mnemonic: Mapped[str] = mapped_column(String(15))
     name: Mapped[str] = mapped_column(String(50))
 
-    subjects: Mapped[List["Subject"]] = relationship(
-        "Subject",
-        back_populates="course",
-        cascade="all, delete-orphan")
+    course_id: Mapped[int] = mapped_column(ForeignKey("tbl_courses.id"))
+    course: Mapped["Course"] = relationship(back_populates="subjects")
 
     def __repr__(self) -> str:
         """
@@ -38,4 +36,4 @@ class Course(Base):
         :author: Yves Vindevogel <yves@vindevogel.net>
         """
 
-        return f"Course(id={self.id}, mnemonic={self.mnemonic}, name={self.name})"
+        return f"Subject(id={self.id}, mnemonic={self.mnemonic}, name={self.name})"
