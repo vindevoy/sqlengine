@@ -1,5 +1,4 @@
-from pprint import pprint
-
+from sqlengine.common.output_factory import OutputFactory
 from sqlengine.common.transaction_factory import TransactionFactory
 from sqlengine.db import drop_db, create_db
 from sqlengine.models.student import Student
@@ -117,7 +116,7 @@ def test_all():
     assert result[1].login == "vindevon"
     assert result[2].login == "vindevox"
 
-    pprint(result)
+    OutputFactory.pretty_print(result)
 
 
 def test_delete_ids():
