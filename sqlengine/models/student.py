@@ -1,13 +1,11 @@
-from typing import List, TYPE_CHECKING
+from typing import List
 
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.orm import mapped_column
 
 from sqlengine.common.base import Base
-
-if TYPE_CHECKING:
-    from sqlengine.models.registration import Registration
+from sqlengine.models.registration import Registration
 
 
 class Student(Base):
@@ -29,6 +27,17 @@ class Student(Base):
         "Registration",
         back_populates="student",
         cascade="all, delete-orphan")
+
+    @classmethod
+    def read(cls, rec_id: int, deep: bool = False):
+        student = super().read(rec_id=rec_id)
+
+        if not deep:
+            return student
+
+        student.registrations = Registration.query(Registration.student_id == student.id)
+
+        return student
 
     def __repr__(self) -> str:
         """

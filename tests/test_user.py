@@ -76,3 +76,20 @@ def test_query():
     assert len(result) == 3
 
     OutputFactory.pretty_print(result)
+
+
+def test_deep_read():
+    drop_db.execute()
+    create_db.execute()
+    create_db.populate()
+
+    assert Student.record_count() == 3
+
+    s1 = Student.read(rec_id=1, deep=True)
+
+    assert len(s1.registrations) == 1
+
+    reg = s1.registrations[0]
+
+    assert reg.student_id == 1
+    assert reg.student.login == "vindevoy"
