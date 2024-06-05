@@ -5,6 +5,7 @@ import pandas as pd
 from sqlengine.common.engine_factory import EngineFactory
 from sqlengine.db.drop_db import execute as drop_db_execute
 from sqlengine.models.course import Course
+from sqlengine.models.grade import Grade
 from sqlengine.models.registration import Registration
 from sqlengine.models.school_year import SchoolYear
 from sqlengine.models.student import Student
@@ -26,8 +27,9 @@ def execute() -> None:
     SchoolYear.metadata.create_all(engine)
 
     Subject.metadata.create_all(engine)  # requires Course
-
     Registration.metadata.create_all(engine)  # requires Course, Student and SchoolYear
+
+    Grade.metadata.create_all(engine)  # requires Registration, Subject
 
 
 def populate():
@@ -44,6 +46,7 @@ def populate():
     __populate_table("school_years", SchoolYear)
     __populate_table("subjects", Subject)  # requires courses
     __populate_table("registrations", Registration)  # requires courses, students, school_years
+    __populate_table("grades", Grade)  # requires registration, subjects
 
 
 def __populate_table(entity: str, entity_cls):

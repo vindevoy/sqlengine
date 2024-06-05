@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
@@ -8,6 +8,7 @@ from sqlengine.models.base import Base
 
 if TYPE_CHECKING:
     from sqlengine.models.course import Course
+    from sqlengine.models.grade import Grade
 
 
 class Subject(Base):
@@ -26,6 +27,11 @@ class Subject(Base):
 
     course_id: Mapped[int] = mapped_column(ForeignKey("tbl_courses.id"))
     course: Mapped["Course"] = relationship(back_populates="subjects")
+
+    grades: Mapped[List["Grade"]] = relationship(
+        "Grade",
+        back_populates="subject",
+        cascade="all, delete-orphan")
 
     def __repr__(self) -> str:
         """
