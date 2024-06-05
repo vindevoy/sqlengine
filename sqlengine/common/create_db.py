@@ -102,3 +102,5 @@ if __name__ == "__main__":
     drop_db_execute()
     execute()
     populate()
+
+# FIXME: Add an update to the sequences for the populate
