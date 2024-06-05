@@ -1,5 +1,6 @@
 import flet as ft
 
+# TODO: find a better system for the imports
 from sqlengine.samples.course import Course
 from sqlengine.samples.grade import Grade
 from sqlengine.samples.registration import Registration
