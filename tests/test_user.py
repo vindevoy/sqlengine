@@ -1,3 +1,5 @@
+from sqlengine.common.output_factory import OutputFactory
+from sqlengine.common.transaction_factory import TransactionFactory
 from sqlengine.db import drop_db, create_db
 from sqlengine.models.student import Student
 
@@ -51,3 +53,26 @@ def test_delete():
     v.delete()
 
     assert Student.record_count() == 0
+
+
+def test_query():
+    setup_test()
+
+    s1 = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s2 = Student(first_name="Niels", last_name="Vindevogel", login="vindevon")
+    s3 = Student(first_name="Next", last_name="Vindevogel", login="vindevox")
+
+    with TransactionFactory.get_transaction() as t:
+        t.create(s1, s2, s3)
+
+    result = Student.query(Student.login == "vindevoy")
+
+    assert len(result) == 1
+
+    OutputFactory.pretty_print(result)
+
+    result = Student.query(Student.last_name == "Vindevogel")
+
+    assert len(result) == 3
+
+    OutputFactory.pretty_print(result)

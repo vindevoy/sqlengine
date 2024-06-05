@@ -119,3 +119,18 @@ class Base(DeclarativeBase):
             # the list comprehension makes sure that all records are read and that the session can be closed.
             return [row[0] for row in session.execute(stmt)]
             ###
+
+    @classmethod
+    def query(cls, where_clause):
+        """
+        Returns the records from a select with where clause.
+
+        :version: 1.0.0
+        :date: 2024-06-05
+        :author: Yves Vindevogel <yves@vindevogel.net>
+        """
+
+        stmt = select(cls).where(where_clause)
+
+        with SessionFactory.get_session() as session:
+            return [row[0] for row in session.execute(stmt)]
