@@ -118,3 +118,23 @@ def test_all():
     assert result[2].login == "vindevox"
 
     pprint(result)
+
+
+def test_delete_ids():
+    setup_test()
+
+    assert Student.record_count() == 0
+
+    s1 = Student(first_name="Yves", last_name="Vindevogel", login="vindevoy")
+    s2 = Student(first_name="Niels", last_name="Vindevogel", login="vindevon")
+    s3 = Student(first_name="Next", last_name="Vindevogel", login="vindevox")
+
+    with TransactionFactory.get_transaction() as t:
+        t.create(s1, s2, s3)
+
+    assert Student.record_count() == 3
+
+    with TransactionFactory.get_transaction() as t:
+        t.delete_ids(Student, [1, 2])
+
+    assert Student.record_count() == 1

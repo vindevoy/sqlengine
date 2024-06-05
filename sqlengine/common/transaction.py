@@ -108,6 +108,19 @@ class Transaction:
 
             session.commit()
 
+    def delete_ids(self, cls, rec_ids: list[int]):
+        """
+        Delete one or more records in the database, by id.
+
+        :return: None
+
+        :version: 1.0.0
+        :date: 2024-06-05
+        :author: Yves Vindevogel <yves@vindevogel.net>
+        """
+        records = self.read(cls, rec_ids)
+        self.delete(*records)
+
     def __enter__(self) -> Any:
         """
         Entry point for the context manager.
