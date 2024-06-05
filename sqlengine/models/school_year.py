@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import date
 
-from sqlalchemy import String, DateTime
+from sqlalchemy import String, Date
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 
@@ -19,8 +19,8 @@ class SchoolYear(Base):
     __tablename__ = "tbl_school_years"
 
     name: Mapped[str] = mapped_column(String(10))
-    start_date: Mapped[datetime] = mapped_column(DateTime)
-    end_date: Mapped[datetime] = mapped_column(DateTime)
+    start_date: Mapped[date] = mapped_column(Date)
+    end_date: Mapped[date] = mapped_column(Date)
 
     def __repr__(self) -> str:
         """
