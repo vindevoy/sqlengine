@@ -3,6 +3,9 @@ from pathlib import Path
 import pandas as pd
 
 from sqlengine.common.engine_factory import EngineFactory
+from sqlengine.db.drop_db import execute as drop_db_execute
+from sqlengine.models.course import Course
+from sqlengine.models.school_year import SchoolYear
 from sqlengine.models.student import Student
 
 
@@ -17,6 +20,8 @@ def execute() -> None:
     engine = EngineFactory.get_engine()
 
     Student.metadata.create_all(engine)
+    Course.metadata.create_all(engine)
+    SchoolYear.metadata.create_all(engine)
 
 
 def populate():
@@ -28,25 +33,51 @@ def populate():
     :author: Yves Vindevogel <yves@vindevogel.net>
     """
 
-    __populate_table("tbl_students", "students.csv")
+    __populate_table("students", Student)
+    __populate_table("courses", Course)
+    __populate_table("school_years", SchoolYear)
 
 
-def __populate_table(table_name: str, csv_file: str):
+def __populate_table(entity: str, entity_cls):
     """
-    Populates a single table using pandas.
+    Populates a single table using pandas for reading the csv and the model classes for writing.
 
-    :version: 1.0.0
+    :version: 1.0.1
     :date: 2024-06-05
     :author: Yves Vindevogel <yves@vindevogel.net>
     """
 
-    engine = EngineFactory.get_engine()
     current_path = Path(__file__).parent
+    csv_file = current_path.joinpath(f"{entity}.csv")
 
     data = pd.read_csv(current_path.joinpath(csv_file), sep=";")
-    data.to_sql(table_name, engine, if_exists="replace", index=False)
+
+    for _, row in data.iterrows():
+        entity_cls(**row).create()
+
+    ###
+    # The code below does not maintain the column definition, fixed in 1.0.1
+    # data.to_sql(table_name, engine, if_exists="replace", index=False)
+    ###
+
+    ###
+    # Version history
+    #
+    # version: 1.0.1
+    # date: 2024-06-05
+    # author: Yves Vindevogel <yves@vindevogel.net>
+    #
+    # No longer using the to_sql to write the records because it messes up the original column definition
+    #
+    # version: 1.0.0
+    # date: 2024-06-05
+    # author: Yves Vindevogel <yves@vindevogel.net>
+    #
+    # Original code
+    ###
 
 
 if __name__ == "__main__":
+    drop_db_execute()
     execute()
     populate()
