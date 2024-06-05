@@ -1,4 +1,3 @@
-from collections import namedtuple
 from typing import Any
 
 from sqlalchemy import func, select
